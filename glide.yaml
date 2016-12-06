@@ -9,3 +9,4 @@ import:
 - package: github.com/phyber/negroni-gzip
   subpackages:
   - gzip
+- package: github.com/unrolled/render

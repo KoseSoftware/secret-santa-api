@@ -8,12 +8,15 @@ import (
 	"github.com/KoseSoftware/secret-santa-api/controllers"
 	"github.com/gorilla/mux"
 	"github.com/phyber/negroni-gzip/gzip"
+	"github.com/unrolled/render"
 	"github.com/urfave/negroni"
 )
 
 func main() {
-	hc := controllers.NewHomepageController()
-	lc := controllers.NewListsController()
+	v := render.New()
+
+	hc := controllers.NewHomepageController(v)
+	lc := controllers.NewListsController(v)
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", hc.Index).Methods("GET").Name("homepage")

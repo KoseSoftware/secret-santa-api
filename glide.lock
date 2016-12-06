@@ -1,5 +1,5 @@
-hash: 1ae9b94bc3b0c5fa84566f6ac80449637fb369eb001566aadabb1ca163c1998f
-updated: 2016-12-05T22:13:39.5414851Z
+hash: 0d60e0ef1c0ca73ed8da0ef60940b67221ecb31d8bbde31dfe6cfee469634663
+updated: 2016-12-06T21:39:37.154088176Z
 imports:
 - name: github.com/gorilla/context
   version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
@@ -9,6 +9,8 @@ imports:
   version: 13f05ed68248e012fcc773ecd829abcc0bb3abd8
   subpackages:
   - gzip
+- name: github.com/unrolled/render
+  version: 526faf80cd4b305bb8134abea8d20d5ced74faa6
 - name: github.com/urfave/negroni
   version: fde5e16d32adc7ad637e9cd9ad21d4ebc6192535
 testImports: []
