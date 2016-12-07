@@ -16,7 +16,7 @@ func main() {
 	v := render.New()
 
 	hc := controllers.NewHomepageController(v)
-	lc := controllers.NewListsController(v)
+	lc := controllers.NewListController(v)
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", hc.Index).Methods("GET").Name("homepage")

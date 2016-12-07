@@ -3,14 +3,21 @@ package controllers
 import (
 	"net/http"
 
-	"fmt"
-
 	"github.com/KoseSoftware/secret-santa-api/models"
 	"github.com/unrolled/render"
 )
 
+type Self struct {
+	Href string `json:"href,omitempty"`
+}
+type Next struct {
+	Href string `json:"href,omitempty"`
+}
+
+// http://stackoverflow.com/questions/33447334/golang-json-marshal-how-to-omit-empty-nested-struct
 type Links struct {
-	Self string `json:"self"`
+	Self *Self `json:"self,omitempty"`
+	Next *Next `json:"next,omitempty"`
 }
 
 type JsonResponse struct {
@@ -24,7 +31,7 @@ type ListController struct {
 	view *render.Render
 }
 
-func NewListsController(r *render.Render) *ListController {
+func NewListController(r *render.Render) *ListController {
 	return &ListController{
 		view: r,
 	}
@@ -47,7 +54,9 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 		Status: http.StatusText(http.StatusOK),
 		Code:   http.StatusOK,
 		Links: Links{
-			Self: fmt.Sprintf("http://%s/lists/", r.Host),
+			Self: &Self{
+				Href: "/lists/",
+			},
 		},
 		Data: append(lists, list1, list2),
 	})
