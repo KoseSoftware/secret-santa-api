@@ -2,8 +2,7 @@ package controllers
 
 import (
 	"net/http"
-
-	"fmt"
+	"time"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
 	"github.com/unrolled/render"
@@ -37,17 +36,27 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	list1 := models.List{
 		Organiser: "Stephen McAuley",
 		Email:     "steviebiddles@gmail.com",
+		Amount:    50.00,
+		Date:      time.Date(2016, time.December, 25, 15, 0, 0, 0, time.UTC),
+		Location:  "Mums house",
+		Notes:     "Try and not spoil it this year by telling anyone who you are buying for!",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	list2 := models.List{
 		Organiser: "Sheena Hall",
 		Email:     "sheena1hall@gmail.com",
+		Amount:    99.99,
+		Date:      time.Date(2016, time.December, 25, 10, 0, 0, 0, time.UTC),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	lc.view.JSON(w, http.StatusOK, JsonResponse{
 		Status: http.StatusText(http.StatusOK),
 		Code:   http.StatusOK,
 		Links: Links{
-			Self: fmt.Sprintf("http://%s/lists/", r.Host),
+			Self: "/lists/",
 		},
 		Data: append(lists, list1, list2),
 	})
