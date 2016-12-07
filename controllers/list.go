@@ -5,19 +5,9 @@ import (
 	"time"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
+	"github.com/KoseSoftware/secret-santa-api/responses"
 	"github.com/unrolled/render"
 )
-
-type Links struct {
-	Self string `json:"self"`
-}
-
-type JsonResponse struct {
-	Status string      `json:"status"`
-	Code   int         `json:"code"`
-	Links  Links       `json:"links"`
-	Data   interface{} `json:"data"`
-}
 
 type ListController struct {
 	view *render.Render
@@ -31,7 +21,8 @@ func NewListsController(r *render.Render) *ListController {
 
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
 func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
-	lists := make([]models.List, 0)
+	meta := make(map[string]interface{}, 0)
+	data := make([]models.List, 0)
 
 	list1 := models.List{
 		Organiser: "Stephen McAuley",
@@ -52,13 +43,27 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 		UpdatedAt: time.Now(),
 	}
 
-	lc.view.JSON(w, http.StatusOK, JsonResponse{
-		Status: http.StatusText(http.StatusOK),
-		Code:   http.StatusOK,
-		Links: Links{
-			Self: "/lists/",
-		},
-		Data: append(lists, list1, list2),
+	// prepare meta
+	meta["current-page"] = 1
+	meta["total-pages"] = 10
+	meta["extra"] = "some extra meta information"
+
+	// prepare links
+	links := responses.Links{
+		Self: "/lists/?page[pg]=1&page[limit]=2",
+		Next: "/lists/?page[pg]=2&page[limit]=2",
+		Last: "/lists/?page[pg]=5&page[limit]=2",
+	}
+
+	// prepare data
+	data = append(data, list1, list2)
+
+	lc.view.JSON(w, http.StatusOK, responses.Success{
+		Status: http.StatusOK,
+		Title:  http.StatusText(http.StatusOK),
+		Meta:   meta,
+		Links:  links,
+		Data:   data,
 	})
 }
 
