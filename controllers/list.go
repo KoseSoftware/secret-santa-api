@@ -36,8 +36,8 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 			Date:      time.Date(2016, time.December, 25, 15, 0, 0, 0, time.UTC),
 			Location:  "Mums house",
 			Notes:     "Try and not spoil it this year by telling anyone who you are buying for!",
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			Created:   time.Now(),
+			Updated:   time.Now(),
 		}
 
 		// prepare links
@@ -92,16 +92,16 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 		Date:      time.Date(2016, time.December, 25, 15, 0, 0, 0, time.UTC),
 		Location:  "Mums house",
 		Notes:     "Try and not spoil it this year by telling anyone who you are buying for!",
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Created:   time.Now(),
+		Updated:   time.Now(),
 	}
 	list2 := models.List{
 		Organiser: "Sheena Hall",
 		Email:     "sheena1hall@gmail.com",
 		Amount:    99.99,
 		Date:      time.Date(2016, time.December, 25, 10, 0, 0, 0, time.UTC),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Created:   time.Now(),
+		Updated:   time.Now(),
 	}
 
 	// prepare meta
