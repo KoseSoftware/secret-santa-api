@@ -49,8 +49,8 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 		data = append(data, list1)
 
 		lc.view.JSON(w, http.StatusOK, responses.Success{
-			Status: http.StatusOK,
-			Title:  http.StatusText(http.StatusOK),
+			Code:   http.StatusOK,
+			Status: http.StatusText(http.StatusOK),
 			Links:  links,
 			Data:   data,
 		})
@@ -59,22 +59,23 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 		// each errors
 		error1 := responses.Error{
-			Message: fmt.Sprintf("List item %d not found", id),
+			Message: fmt.Sprintf("List item %d not found.", id),
 		}
 
 		error2 := responses.Error{
-			Status:  http.StatusBadRequest,
-			Title:   http.StatusText(http.StatusBadRequest),
-			Message: "This is an extra error message",
+			Code:    http.StatusBadRequest,
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Value is too short.",
+			Detail:  "First name must contain at least three characters.",
 		}
 
 		// prepare errors
 		errors = append(errors, error1, error2)
 
 		lc.view.JSON(w, http.StatusNotFound, responses.Errors{
-			Status:  http.StatusNotFound,
-			Title:   http.StatusText(http.StatusNotFound),
-			Message: "There is an error",
+			Code:    http.StatusNotFound,
+			Status:  http.StatusText(http.StatusNotFound),
+			Message: "Form validation errors.",
 			Errors:  errors,
 		})
 	}
@@ -106,11 +107,13 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	// prepare meta
 	meta := map[string]interface{}{
 		"pages": responses.Pages{
-			Current: 1,
-			Next:    2,
-			Last:    2,
-			Limit:   2,
-			Total:   5,
+			Current:  1,
+			Previous: 1,
+			Next:     2,
+			First:    1,
+			Last:     2,
+			Limit:    2,
+			Total:    5,
 		},
 		"extra": "some extra stuff",
 		"key":   "value",
@@ -127,8 +130,8 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	data = append(data, list1, list2)
 
 	lc.view.JSON(w, http.StatusOK, responses.Success{
-		Status: http.StatusOK,
-		Title:  http.StatusText(http.StatusOK),
+		Code:   http.StatusOK,
+		Status: http.StatusText(http.StatusOK),
 		Meta:   meta,
 		Links:  links,
 		Data:   data,

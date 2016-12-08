@@ -1,14 +1,15 @@
 package responses
 
 type Error struct {
-	Status  int    `json:"status,omitempty"`
-	Title   string `json:"title,omitempty"`
+	Code    int    `json:"code,omitempty"`
+	Status  string `json:"status,omitempty"`
 	Message string `json:"message"`
+	Detail  string `json:"detail,omitempty"`
 }
 
 type Errors struct {
-	Status  int     `json:"status"`
-	Title   string  `json:"title"`
+	Code    int     `json:"code"`
+	Status  string  `json:"status"`
 	Message string  `json:"message,omitempty"`
 	Errors  []Error `json:"errors"`
 }
