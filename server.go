@@ -24,6 +24,7 @@ func main() {
 	l := r.PathPrefix("/lists").Subrouter().StrictSlash(true)
 	l.HandleFunc("/", lc.GetLists).Methods("GET").Name("get_lists")
 	l.HandleFunc("/", lc.PostLists).Methods("POST").Name("post_lists")
+	l.HandleFunc("/{id:[0-9]+}/", lc.GetList).Methods("GET").Name("get_list")
 
 	n := negroni.New()
 	n.Use(negroni.NewRecovery())
