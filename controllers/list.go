@@ -1,11 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
 	"github.com/KoseSoftware/secret-santa-api/responses"
+	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 )
 
@@ -19,9 +22,66 @@ func NewListsController(r *render.Render) *ListController {
 	}
 }
 
+func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+
+	if id == 1 {
+		data := make([]models.List, 0)
+
+		list1 := models.List{
+			Organiser: "Stephen McAuley",
+			Email:     "steviebiddles@gmail.com",
+			Amount:    50.00,
+			Date:      time.Date(2016, time.December, 25, 15, 0, 0, 0, time.UTC),
+			Location:  "Mums house",
+			Notes:     "Try and not spoil it this year by telling anyone who you are buying for!",
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		}
+
+		// prepare links
+		links := responses.Links{
+			Self: "/lists/1/",
+		}
+
+		// prepare data
+		data = append(data, list1)
+
+		lc.view.JSON(w, http.StatusOK, responses.Success{
+			Status: http.StatusOK,
+			Title:  http.StatusText(http.StatusOK),
+			Links:  links,
+			Data:   data,
+		})
+	} else {
+		errors := make([]responses.Error, 0)
+
+		// each errors
+		error1 := responses.Error{
+			Message: fmt.Sprintf("List item %d not found", id),
+		}
+
+		error2 := responses.Error{
+			Status:  http.StatusBadRequest,
+			Title:   http.StatusText(http.StatusBadRequest),
+			Message: "This is an extra error message",
+		}
+
+		// prepare errors
+		errors = append(errors, error1, error2)
+
+		lc.view.JSON(w, http.StatusNotFound, responses.Errors{
+			Status:  http.StatusNotFound,
+			Title:   http.StatusText(http.StatusNotFound),
+			Message: "There is an error",
+			Errors:  errors,
+		})
+	}
+}
+
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
 func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
-	meta := make(map[string]interface{}, 0)
 	data := make([]models.List, 0)
 
 	list1 := models.List{
@@ -44,9 +104,17 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// prepare meta
-	meta["current-page"] = 1
-	meta["total-pages"] = 10
-	meta["extra"] = "some extra meta information"
+	meta := map[string]interface{}{
+		"pages": responses.Pages{
+			Current: 1,
+			Next:    2,
+			Last:    2,
+			Limit:   2,
+			Total:   5,
+		},
+		"extra": "some extra stuff",
+		"key":   "value",
+	}
 
 	// prepare links
 	links := responses.Links{

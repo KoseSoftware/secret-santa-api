@@ -1,5 +1,13 @@
 package responses
 
+type Pages struct {
+	Current int `json:"current,omitempty"`
+	Next    int `json:"next,omitempty"`
+	Last    int `json:"last,omitempty"`
+	Limit   int `json:"limit,omitempty"`
+	Total   int `json:"total,omitempty"`
+}
+
 type Links struct {
 	Self     string `json:"self"`
 	First    string `json:"first,omitempty"`
