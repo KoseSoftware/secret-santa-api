@@ -1,0 +1,96 @@
+#%RAML 1.0
+title: Secret Santa API
+version: 1.0.0
+baseUri: http://localhost:3000/
+types:
+  ListResponseObject:
+    displayName: ListResponseObject
+    type: object
+    properties:
+      code:
+        required: true
+        displayName: code
+        type: integer
+        format: int32
+      status:
+        required: true
+        displayName: status
+        type: string
+      links:
+        required: true
+        displayName: links
+        type: LinksObject
+      data:
+        required: true
+        displayName: data
+        type: array
+        items:
+          type: ListObject
+  LinksObject:
+    displayName: LinksObject
+    type: object
+    properties:
+      self:
+        required: true
+        displayName: self
+        type: string
+  ListObject:
+    displayName: ListObject
+    type: object
+    properties:
+      id:
+        required: true
+        displayName: id
+        type: integer
+        format: int64
+      organiser:
+        required: true
+        displayName: organiser
+        type: string
+      email:
+        required: true
+        displayName: email
+        type: string
+      amount:
+        required: true
+        displayName: amount
+        type: number
+        format: double
+      date:
+        required: true
+        displayName: date
+        type: datetime
+      location:
+        required: false
+        displayName: location
+        type: string
+      notes:
+        required: false
+        displayName: notes
+        type: string
+      created:
+        required: true
+        displayName: created
+        type: datetime
+      updated:
+        required: true
+        displayName: updated
+        type: datetime
+/lists/{id}:
+  uriParameters:
+    id:
+      required: true
+      displayName: id
+      type: integer
+  get:
+    description: Get a secret santa list by ID
+    responses:
+      200:
+        description: A secret santa list
+        body:
+          application/json:
+            displayName: response
+            description: A secret santa list
+            type: ListResponseObject
+      404:
+        description: Secret santa list not found
