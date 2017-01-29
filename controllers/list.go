@@ -7,18 +7,21 @@ import (
 	"time"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
+	"github.com/KoseSoftware/secret-santa-api/repositories"
 	"github.com/KoseSoftware/secret-santa-api/responses"
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 )
 
 type ListController struct {
-	view *render.Render
+	listRepository *repositories.ListRepository
+	view           *render.Render
 }
 
-func NewListsController(r *render.Render) *ListController {
+func NewListsController(lr *repositories.ListRepository, r *render.Render) *ListController {
 	return &ListController{
-		view: r,
+		listRepository: lr,
+		view:           r,
 	}
 }
 
