@@ -17,7 +17,7 @@ import (
 func main() {
 	v := render.New()
 
-	db, err := sql.Open("mysql", "root:@tcp(:3306)/test")
+	db, err := sql.Open("mysql", "root:password@tcp(localhost:3307)/secret_santa_dev")
 	if err != nil {
 		log.Fatal(err)
 	}

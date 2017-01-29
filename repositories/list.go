@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
 	_ "github.com/go-sql-driver/mysql"
@@ -18,8 +18,24 @@ func NewListRepository(db *sql.DB) *ListRepository {
 	}
 }
 
-func (lr *ListRepository) Create(l models.List) error {
-	fmt.Println("create")
+func (lr *ListRepository) Create(l models.List) (id int64, err error) {
+	stmt, err := lr.db.Prepare("INSERT INTO list (organiser, email) VALUES (?, ?)")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	return nil
+	res, err := stmt.Exec(
+		l.Organiser,
+		l.Email,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	id, err = res.LastInsertId()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return
 }

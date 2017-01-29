@@ -86,6 +86,15 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
 func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
+	id, _ := lc.listRepository.Create(models.List{
+		Organiser: "Sheena",
+		Email:     "sheena1hall@gmail.com",
+		Amount:    49.99,
+		Date:      time.Date(2017, time.December, 25, 15, 0, 0, 0, time.UTC),
+	})
+
+	fmt.Println(id)
+
 	data := make([]models.List, 0)
 
 	list1 := models.List{
