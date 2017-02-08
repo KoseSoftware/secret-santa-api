@@ -12,3 +12,5 @@ import:
 - package: github.com/unrolled/render
 - package: github.com/markbates/pop
   version: ^3.11.3
+- package: github.com/mholt/binding
+  version: ^0.3.0

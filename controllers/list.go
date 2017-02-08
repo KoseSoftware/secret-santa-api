@@ -1,15 +1,16 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
-	"fmt"
-
+	"github.com/KoseSoftware/secret-santa-api/models"
 	"github.com/KoseSoftware/secret-santa-api/repositories"
 	"github.com/KoseSoftware/secret-santa-api/responses"
 	"github.com/gorilla/mux"
+	"github.com/mholt/binding"
 	"github.com/unrolled/render"
 )
 
@@ -91,7 +92,21 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 }
 
 func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Post list to here"))
+	list := new(models.List)
+
+	errs := binding.Bind(r, list)
+	if errs.Handle(w) {
+		return
+	}
+
+	id, err := lc.listRepository.Create(*list)
+	if err != nil {
+		log.Print(err.Error())
+	}
+
+	url, _ := mux.CurrentRoute(r).URL()
+	location := fmt.Sprintf("%s/%s", url.String(), strconv.Itoa(int(id)))
+
+	w.Header().Set("Location", location)
+	w.WriteHeader(http.StatusCreated)
 }

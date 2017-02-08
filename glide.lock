@@ -1,5 +1,5 @@
-hash: 8671ea48643c8783380d1c1e7b6b36f34ba6015abe115959f7461dd899a236ab
-updated: 2017-02-07T22:44:24.608543988Z
+hash: 7c2826ae0f9e200c1e418322cc6536634dde90bd7bbdeecd7950b4b3f50f6938
+updated: 2017-02-08T20:36:03.275859162Z
 imports:
 - name: github.com/daviddengcn/go-colortext
   version: 805cee6e0d43c72ba1d4e3275965ff41e0da068a
@@ -66,6 +66,8 @@ imports:
   - vm
 - name: github.com/mattn/go-sqlite3
   version: 6f8cd03789727d57d2c5906a1c2990f5ab50f8e1
+- name: github.com/mholt/binding
+  version: f53601f1387c422be7317a2b01d96b2455d2d2d6
 - name: github.com/phyber/negroni-gzip
   version: 13f05ed68248e012fcc773ecd829abcc0bb3abd8
   subpackages:
@@ -83,5 +85,5 @@ imports:
   subpackages:
   - context
 - name: gopkg.in/yaml.v2
-  version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
+  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
 testImports: []

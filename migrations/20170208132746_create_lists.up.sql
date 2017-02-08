@@ -1,12 +1,36 @@
 CREATE TABLE `lists` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `organiser` varchar(128) NOT NULL DEFAULT '',
-  `email` varchar(128) NOT NULL DEFAULT '',
-  `amount` double(8,2) NOT NULL,
-  `date` datetime NOT NULL,
-  `location` varchar(255) DEFAULT '',
-  `notes` varchar(255) DEFAULT '',
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `id`        INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `organiser` VARCHAR(128)     NOT NULL DEFAULT '',
+  `email`     VARCHAR(128)     NOT NULL DEFAULT '',
+  `amount`    DOUBLE(8, 2)     NOT NULL,
+  `date`      DATETIME         NOT NULL,
+  `location`  VARCHAR(255)              DEFAULT '',
+  `notes`     VARCHAR(255)              DEFAULT '',
+  `created`   DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated`   DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+
+INSERT INTO `lists` (
+  `id`,
+  `organiser`,
+  `email`,
+  `amount`,
+  `date`,
+  `location`,
+  `notes`,
+  `created`,
+  `updated`
+) VALUES (
+  NULL,
+  'Stephen McAuley',
+  'steviebiddles@gmail.com',
+  '49.99',
+  '2017-12-25 09:00:00',
+  '',
+  '',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP
+);
