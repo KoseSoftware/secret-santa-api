@@ -1,14 +1,13 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 
 	"github.com/KoseSoftware/secret-santa-api/config"
 	"github.com/KoseSoftware/secret-santa-api/controllers"
 	"github.com/KoseSoftware/secret-santa-api/repositories"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/markbates/pop"
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/unrolled/render"
 	"github.com/urfave/negroni"
@@ -17,13 +16,12 @@ import (
 func main() {
 	v := render.New()
 
-	db, err := sql.Open("mysql", "root:password@tcp(localhost:3307)/secret_santa_dev")
+	db, err := pop.Connect("development")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
-	lr := repositories.NewListRepository(db)
+	lr := repositories.NewPopListRepository(db)
 
 	hc := controllers.NewHomepageController(v)
 	lc := controllers.NewListsController(lr, v)

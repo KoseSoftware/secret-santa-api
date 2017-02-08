@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -14,11 +14,11 @@ import (
 )
 
 type ListController struct {
-	listRepository *repositories.ListRepository
+	listRepository repositories.ListerRepository
 	view           *render.Render
 }
 
-func NewListsController(lr *repositories.ListRepository, r *render.Render) *ListController {
+func NewListsController(lr repositories.ListerRepository, r *render.Render) *ListController {
 	return &ListController{
 		listRepository: lr,
 		view:           r,
@@ -29,72 +29,40 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 
-	if id == 1 {
-		data := make([]models.List, 0)
+	item, err := lc.listRepository.FindByID(int64(id))
+	if err != nil {
+		log.Print(err.Error())
 
-		list1 := models.List{
-			Organiser: "Stephen McAuley",
-			Email:     "steviebiddles@gmail.com",
-			Amount:    50.00,
-			Date:      time.Date(2016, time.December, 25, 15, 0, 0, 0, time.UTC),
-			Location:  "Mums house",
-			Notes:     "Try and not spoil it this year by telling anyone who you are buying for!",
-			Created:   time.Now(),
-			Updated:   time.Now(),
-		}
-
-		// prepare links
-		links := responses.Links{
-			Self: "/lists/1/",
-		}
-
-		// prepare data
-		data = append(data, list1)
-
-		lc.view.JSON(w, http.StatusOK, responses.Success{
-			Code:   http.StatusOK,
-			Status: http.StatusText(http.StatusOK),
-			Links:  links,
-			Data:   data,
-		})
-	} else {
 		errors := make([]responses.Error, 0)
-
-		// each errors
-		error1 := responses.Error{
-			Message: fmt.Sprintf("List item %d not found.", id),
-		}
-
-		error2 := responses.Error{
-			Code:    http.StatusBadRequest,
-			Status:  http.StatusText(http.StatusBadRequest),
-			Message: "Value is too short.",
-			Detail:  "First name must contain at least three characters.",
-		}
-
-		// prepare errors
-		errors = append(errors, error1, error2)
+		errors = append(errors, responses.Error{
+			Message: err.Error(),
+		})
 
 		lc.view.JSON(w, http.StatusNotFound, responses.Errors{
 			Code:    http.StatusNotFound,
 			Status:  http.StatusText(http.StatusNotFound),
-			Message: "Form validation errors.",
+			Message: "list item not found",
 			Errors:  errors,
 		})
+
+		return
 	}
+
+	url, _ := mux.CurrentRoute(r).URL("id", strconv.Itoa(id))
+	links := responses.Links{
+		Self: url.String(),
+	}
+
+	lc.view.JSON(w, http.StatusOK, responses.Success{
+		Code:   http.StatusOK,
+		Status: http.StatusText(http.StatusOK),
+		Links:  links,
+		Data:   item,
+	})
 }
 
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
 func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
-	id, _ := lc.listRepository.Create(models.List{
-		Organiser: "Sheena",
-		Email:     "sheena1hall@gmail.com",
-		Amount:    49.99,
-		Date:      time.Date(2017, time.December, 25, 15, 0, 0, 0, time.UTC),
-	})
-
-	fmt.Println(id)
-
 	data := make([]models.List, 0)
 
 	list1 := models.List{

@@ -22,6 +22,6 @@ type Success struct {
 	Code   int                    `json:"code"`
 	Status string                 `json:"status"`
 	Meta   map[string]interface{} `json:"meta,omitempty"`
-	Links  Links                  `json:"links"`
+	Links  Links                  `json:"_links"`
 	Data   interface{}            `json:"data"`
 }
