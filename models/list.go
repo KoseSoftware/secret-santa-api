@@ -11,7 +11,7 @@ import (
 type List struct {
 	ID        int             `json:"id,omitempty" db:"id,omitempty"`
 	Organiser string          `json:"organiser" db:"organiser"`
-	Email     string          `json:"email" db:"email"`
+	Email     string          `json:"email" db:"email" validate:"required,email"`
 	Amount    float64         `json:"amount" db:"amount"`
 	Date      time.Time       `json:"date" db:"date"`
 	Location  string          `json:"location,omitempty" db:"location"`
@@ -49,4 +49,20 @@ func (l *List) FieldMap(req *http.Request) binding.FieldMap {
 			Required: false,
 		},
 	}
+}
+
+func (l *List) Validate(req *http.Request, errs binding.Errors) binding.Errors {
+	if l.Amount == 0 {
+		errs = append(errs, binding.Error{
+			Message: "Provide an amount that is greater than zero.",
+		})
+	}
+
+	if time.Now().After(l.Date) {
+		errs = append(errs, binding.Error{
+			Message: "Provide a date in the future.",
+		})
+	}
+
+	return errs
 }
