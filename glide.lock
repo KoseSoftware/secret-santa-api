@@ -1,10 +1,10 @@
-hash: a3a69ad538e1c4eb89d0f192554d32da7e964ae6e4a9a0ebbfa6d7d21537ae02
-updated: 2017-03-12T21:22:32.242871936Z
+hash: 5bf3c6b6f63cf03c12453543d5997bc953b5c17b3289327379994846046ec0f5
+updated: 2017-03-23T21:43:08.168829976Z
 imports:
 - name: github.com/daviddengcn/go-colortext
   version: 805cee6e0d43c72ba1d4e3275965ff41e0da068a
 - name: github.com/go-playground/locales
-  version: 084b0226cf88d891a2bdeccac01d592af13a8f7b
+  version: b860c92274dfb72f517b8b4c11c6d9f2f8cc9d91
   subpackages:
   - currency
 - name: github.com/go-playground/universal-translator
@@ -20,20 +20,19 @@ imports:
   subpackages:
   - reflectx
 - name: github.com/lib/pq
-  version: e4af84aab01e159ca479940dbde304519e8e8811
+  version: 472a0745531a17dbac346e828b4c60e73ddff30c
   subpackages:
   - oid
 - name: github.com/markbates/going
   version: 0576708c56cea02331f864fe6e157ac7841923e4
   subpackages:
-  - clam
   - defaults
   - randx
   - wait
 - name: github.com/markbates/inflect
   version: 3e74c98c9bcf4148db59b58e94ba545314ae9f61
 - name: github.com/markbates/pop
-  version: e2180b285826d4f44eecef6153113125a7965b38
+  version: 12f7df8d5dc23214fccbd548cfde835159bf17de
   subpackages:
   - columns
   - fizz
@@ -71,7 +70,7 @@ imports:
   - parser
   - vm
 - name: github.com/mattn/go-sqlite3
-  version: eac1dfa2a61ebccaa117538a5bb12044f6700cd0
+  version: 866c3293d9a76aa491e56cc978d0d7fb0e63e121
 - name: github.com/mholt/binding
   version: f53601f1387c422be7317a2b01d96b2455d2d2d6
 - name: github.com/phyber/negroni-gzip
@@ -79,15 +78,15 @@ imports:
   subpackages:
   - gzip
 - name: github.com/pkg/errors
-  version: bfd5150e4e41705ded2129ec33379de1cb90b513
+  version: ff09b135c25aae272398c51a07235b90a75aa4f0
 - name: github.com/satori/go.uuid
-  version: b061729afc07e77a8aa4fad0a2fd840958f1942a
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/unrolled/render
   version: 526faf80cd4b305bb8134abea8d20d5ced74faa6
 - name: github.com/urfave/negroni
   version: fde5e16d32adc7ad637e9cd9ad21d4ebc6192535
 - name: golang.org/x/net
-  version: a6577fac2d73be281a500b310739095313165611
+  version: 3e967e1d28d2c9c06e749dc2bdc14b04df89e689
   subpackages:
   - context
 - name: gopkg.in/go-playground/validator.v9

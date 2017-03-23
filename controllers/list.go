@@ -32,8 +32,6 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 	item, err := lc.listRepository.FindByID(int64(id))
 	if err != nil {
-		log.Print(err.Error())
-
 		errors := make([]responses.Error, 0)
 		errors = append(errors, responses.Error{
 			Message: err.Error(),
@@ -92,16 +90,29 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 }
 
 func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
+	errors := make([]responses.Error, 0)
 	list := new(models.List)
 
 	errs := binding.Bind(r, list)
-	if errs.Handle(w) {
+	if errs != nil {
+		for _, msg := range errs {
+			errors = append(errors, responses.Error{
+				Message: msg.Error(),
+			})
+		}
+
+		errorResponse(lc, w, http.StatusBadRequest, "invalid data", errors)
 		return
 	}
 
 	id, err := lc.listRepository.Create(*list)
 	if err != nil {
-		log.Print(err.Error())
+		errors = append(errors, responses.Error{
+			Message: err.Error(),
+		})
+
+		errorResponse(lc, w, http.StatusUnprocessableEntity, "failed to create list", errors)
+		return
 	}
 
 	url, _ := mux.CurrentRoute(r).URL()
@@ -109,4 +120,13 @@ func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Location", location)
 	w.WriteHeader(http.StatusCreated)
+}
+
+func errorResponse(lc *ListController, w http.ResponseWriter, statusCode int, message string, errors []responses.Error) {
+	lc.view.JSON(w, statusCode, responses.Errors{
+		Code:    statusCode,
+		Status:  http.StatusText(statusCode),
+		Message: message,
+		Errors:  errors,
+	})
 }

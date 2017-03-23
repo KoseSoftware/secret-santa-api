@@ -1,18 +1,20 @@
 package models
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/KoseSoftware/secret-santa-api/responses"
 	"github.com/mholt/binding"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 type List struct {
 	ID        int             `json:"id,omitempty" db:"id,omitempty"`
 	Organiser string          `json:"organiser" db:"organiser"`
 	Email     string          `json:"email" db:"email" validate:"required,email"`
-	Amount    float64         `json:"amount" db:"amount"`
+	Amount    *float64        `json:"amount" db:"amount"`
 	Date      time.Time       `json:"date" db:"date"`
 	Location  string          `json:"location,omitempty" db:"location"`
 	Notes     string          `json:"notes,omitempty" db:"notes"`
@@ -52,15 +54,26 @@ func (l *List) FieldMap(req *http.Request) binding.FieldMap {
 }
 
 func (l *List) Validate(req *http.Request, errs binding.Errors) binding.Errors {
-	if l.Amount == 0 {
+	validate := validator.New()
+
+	err := validate.Struct(l)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			errs = append(errs, binding.Error{
+				Message: fmt.Sprintf("%s: %q is invalid", err.Field(), err.Value()),
+			})
+		}
+	}
+
+	if *l.Amount <= 0 {
 		errs = append(errs, binding.Error{
-			Message: "Provide an amount that is greater than zero.",
+			Message: "Amount: Provide an amount that is greater than zero",
 		})
 	}
 
 	if time.Now().After(l.Date) {
 		errs = append(errs, binding.Error{
-			Message: "Provide a date in the future.",
+			Message: "Date: Provide a date in the future",
 		})
 	}
 
