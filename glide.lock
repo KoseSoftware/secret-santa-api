@@ -1,8 +1,6 @@
-hash: 5bf3c6b6f63cf03c12453543d5997bc953b5c17b3289327379994846046ec0f5
-updated: 2017-03-23T21:43:08.168829976Z
+hash: 71ccf115321be38b272816f3f691b433218a1ab1d74346c48c8ca9c3fd3a0acc
+updated: 2017-03-30T21:22:25.089994191+01:00
 imports:
-- name: github.com/daviddengcn/go-colortext
-  version: 805cee6e0d43c72ba1d4e3275965ff41e0da068a
 - name: github.com/go-playground/locales
   version: b860c92274dfb72f517b8b4c11c6d9f2f8cc9d91
   subpackages:
@@ -15,82 +13,28 @@ imports:
   version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
 - name: github.com/gorilla/mux
   version: 392c28fe23e1c45ddba891b0320b3b5df220beea
-- name: github.com/jmoiron/sqlx
-  version: 8ed836a8adb659e8492bcaa49e0880bb84075fe2
-  subpackages:
-  - reflectx
-- name: github.com/lib/pq
-  version: 472a0745531a17dbac346e828b4c60e73ddff30c
-  subpackages:
-  - oid
-- name: github.com/markbates/going
-  version: 0576708c56cea02331f864fe6e157ac7841923e4
-  subpackages:
-  - defaults
-  - randx
-  - wait
-- name: github.com/markbates/inflect
-  version: 3e74c98c9bcf4148db59b58e94ba545314ae9f61
-- name: github.com/markbates/pop
-  version: 12f7df8d5dc23214fccbd548cfde835159bf17de
-  subpackages:
-  - columns
-  - fizz
-  - fizz/translators
-- name: github.com/markbates/validate
-  version: 45e9150718f6ce4de57a29f3968458cb74f9f312
-- name: github.com/mattn/anko
-  version: bbb27a2b2841493a96350331a89f2199ddafc651
-  subpackages:
-  - ast
-  - builtins
-  - builtins/encoding/json
-  - builtins/errors
-  - builtins/flag
-  - builtins/fmt
-  - builtins/github.com/daviddengcn/go-colortext
-  - builtins/io
-  - builtins/io/ioutil
-  - builtins/math
-  - builtins/math/big
-  - builtins/math/rand
-  - builtins/net
-  - builtins/net/http
-  - builtins/net/url
-  - builtins/os
-  - builtins/os/exec
-  - builtins/os/signal
-  - builtins/path
-  - builtins/path/filepath
-  - builtins/regexp
-  - builtins/runtime
-  - builtins/sort
-  - builtins/strings
-  - builtins/time
-  - parser
-  - vm
-- name: github.com/mattn/go-sqlite3
-  version: 866c3293d9a76aa491e56cc978d0d7fb0e63e121
 - name: github.com/mholt/binding
   version: f53601f1387c422be7317a2b01d96b2455d2d2d6
 - name: github.com/phyber/negroni-gzip
   version: 13f05ed68248e012fcc773ecd829abcc0bb3abd8
   subpackages:
   - gzip
-- name: github.com/pkg/errors
-  version: ff09b135c25aae272398c51a07235b90a75aa4f0
-- name: github.com/satori/go.uuid
-  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/unrolled/render
   version: 526faf80cd4b305bb8134abea8d20d5ced74faa6
 - name: github.com/urfave/negroni
   version: fde5e16d32adc7ad637e9cd9ad21d4ebc6192535
-- name: golang.org/x/net
-  version: 3e967e1d28d2c9c06e749dc2bdc14b04df89e689
-  subpackages:
-  - context
 - name: gopkg.in/go-playground/validator.v9
   version: 4bd19358521c53f09639f21e2a9d6883d6890f24
-- name: gopkg.in/yaml.v2
-  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
+- name: upper.io/db.v3
+  version: 99c1768a1cfc5ad29721228fe27c6ad632f08dbe
+  subpackages:
+  - internal/cache
+  - internal/cache/hashstructure
+  - internal/immutable
+  - internal/sqladapter
+  - internal/sqladapter/compat
+  - internal/sqladapter/exql
+  - lib/reflectx
+  - lib/sqlbuilder
+  - mysql
 testImports: []

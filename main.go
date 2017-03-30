@@ -7,21 +7,22 @@ import (
 	"github.com/KoseSoftware/secret-santa-api/controllers"
 	"github.com/KoseSoftware/secret-santa-api/repositories"
 	"github.com/gorilla/mux"
-	"github.com/markbates/pop"
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/unrolled/render"
 	"github.com/urfave/negroni"
+	"upper.io/db.v3/mysql"
 )
 
 func main() {
 	v := render.New()
 
-	db, err := pop.Connect("development")
+	sess, err := mysql.Open(config.GetDbSettings())
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("db.Open(): %q\n", err)
 	}
+	defer sess.Close()
 
-	lr := repositories.NewPopListRepository(db)
+	lr := repositories.NewUpperListRepository(sess)
 
 	hc := controllers.NewHomepageController(v)
 	lc := controllers.NewListsController(lr, v)
