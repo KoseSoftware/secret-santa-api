@@ -11,6 +11,7 @@ CREATE TABLE `lists` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 2304
   DEFAULT CHARSET = latin1;
 
 INSERT INTO `lists` (

@@ -111,7 +111,7 @@ func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
 			Message: err.Error(),
 		})
 
-		errorResponse(lc, w, http.StatusUnprocessableEntity, "failed to create list", errors)
+		errorResponse(lc, w, http.StatusBadRequest, "failed to create list", errors)
 		return
 	}
 
