@@ -10,9 +10,9 @@ type HomepageController struct {
 	view *render.Render
 }
 
-func NewHomepageController(r *render.Render) *HomepageController {
+func NewHomepageController(v *render.Render) *HomepageController {
 	return &HomepageController{
-		view: r,
+		view: v,
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 )
 
 type List struct {
-	ID        int             `json:"id,omitempty" db:"id,omitempty"`
+	ID        string          `json:"id,omitempty" db:"id,omitempty"`
 	Organiser string          `json:"organiser" db:"organiser"`
 	Email     string          `json:"email" db:"email" validate:"required,email"`
 	Amount    *float64        `json:"amount" db:"amount"`

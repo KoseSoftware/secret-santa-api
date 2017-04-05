@@ -22,3 +22,4 @@ import:
   version: ^3.0.1
   subpackages:
   - mysql
+- package: github.com/dchest/uniuri

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
 	"github.com/KoseSoftware/secret-santa-api/repositories"
@@ -19,18 +18,17 @@ type ListController struct {
 	view           *render.Render
 }
 
-func NewListsController(lr repositories.ListerRepository, r *render.Render) *ListController {
+func NewListController(lr repositories.ListerRepository, v *render.Render) *ListController {
 	return &ListController{
 		listRepository: lr,
-		view:           r,
+		view:           v,
 	}
 }
 
 func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, _ := strconv.Atoi(vars["id"])
 
-	item, err := lc.listRepository.FindByID(int64(id))
+	item, err := lc.listRepository.FindByID(vars["id"])
 	if err != nil {
 		errors := make([]responses.Error, 0)
 		errors = append(errors, responses.Error{
@@ -48,7 +46,7 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// links
-	url, _ := mux.CurrentRoute(r).URL("id", strconv.Itoa(id))
+	url, _ := mux.CurrentRoute(r).URL("id", vars["id"])
 	links := responses.Links{
 		Self: url.String(),
 	}
@@ -65,7 +63,7 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
 func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
-	items, err := lc.listRepository.FindAll()
+	items, err := lc.listRepository.FindAll(r.URL.Query().Get("email"))
 	if err != nil {
 		log.Print(err.Error())
 
@@ -78,7 +76,7 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, item := range items {
-		items[i].Links.Self = fmt.Sprintf("%s/%s", url.String(), strconv.Itoa(item.ID))
+		items[i].Links.Self = fmt.Sprintf("%s/%s", url.String(), item.ID)
 	}
 
 	lc.view.JSON(w, http.StatusOK, responses.Success{
@@ -89,7 +87,7 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
+func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
 	errors := make([]responses.Error, 0)
 	list := new(models.List)
 
@@ -101,7 +99,13 @@ func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
 			})
 		}
 
-		errorResponse(lc, w, http.StatusBadRequest, "invalid data", errors)
+		lc.view.JSON(w, http.StatusBadRequest, responses.Errors{
+			Code:    http.StatusBadRequest,
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "invalid data",
+			Errors:  errors,
+		})
+
 		return
 	}
 
@@ -111,22 +115,41 @@ func (lc *ListController) PostLists(w http.ResponseWriter, r *http.Request) {
 			Message: err.Error(),
 		})
 
-		errorResponse(lc, w, http.StatusBadRequest, "failed to create list", errors)
+		lc.view.JSON(w, http.StatusBadRequest, responses.Errors{
+			Code:    http.StatusBadRequest,
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "failed to create list",
+			Errors:  errors,
+		})
+
 		return
 	}
 
 	url, _ := mux.CurrentRoute(r).URL()
-	location := fmt.Sprintf("%s/%s", url.String(), strconv.Itoa(int(id)))
+	location := fmt.Sprintf("%s/%s", url.String(), id)
 
 	w.Header().Set("Location", location)
 	w.WriteHeader(http.StatusCreated)
 }
 
-func errorResponse(lc *ListController, w http.ResponseWriter, statusCode int, message string, errors []responses.Error) {
-	lc.view.JSON(w, statusCode, responses.Errors{
-		Code:    statusCode,
-		Status:  http.StatusText(statusCode),
-		Message: message,
-		Errors:  errors,
-	})
+func (lc *ListController) PutList(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (lc *ListController) DeleteList(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	rowsAffected, err := lc.listRepository.DeleteByID(vars["id"])
+	if err != nil {
+
+	}
+
+	if rowsAffected == 1 {
+		w.WriteHeader(http.StatusNoContent)
+
+		return
+	}
+
+	// https://developers.google.com/youtube/v3/docs/core_errors
+	w.WriteHeader(http.StatusNotFound)
 }

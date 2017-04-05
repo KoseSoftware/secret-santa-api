@@ -25,14 +25,17 @@ func main() {
 	lr := repositories.NewUpperListRepository(sess)
 
 	hc := controllers.NewHomepageController(v)
-	lc := controllers.NewListsController(lr, v)
+	lc := controllers.NewListController(lr, v)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", hc.Index).Methods("GET").Name("homepage")
 
-	r.HandleFunc("/lists", lc.GetLists).Methods("GET").Name("get_lists")
-	r.HandleFunc("/lists", lc.PostLists).Methods("POST").Name("post_lists")
-	r.HandleFunc("/lists/{id:[0-9]+}", lc.GetList).Methods("GET").Name("get_list")
+	v1 := r.PathPrefix("/api/v1").Subrouter()
+	v1.HandleFunc("/lists", lc.GetLists).Methods("GET").Name("get_lists")
+	v1.HandleFunc("/lists", lc.PostList).Methods("POST").Name("post_list")
+	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}", lc.GetList).Methods("GET").Name("get_list")
+	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}", lc.PutList).Methods("PUT").Name("put_list")
+	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}", lc.DeleteList).Methods("DELETE").Name("delete_list")
 
 	n := negroni.Classic()
 	n.Use(gzip.Gzip(gzip.DefaultCompression))
