@@ -1,4 +1,4 @@
-package responses
+package models
 
 type Pages struct {
 	Current  int `json:"current,omitempty"`

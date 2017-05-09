@@ -7,7 +7,6 @@ import (
 
 	"github.com/KoseSoftware/secret-santa-api/models"
 	"github.com/KoseSoftware/secret-santa-api/repositories"
-	"github.com/KoseSoftware/secret-santa-api/responses"
 	"github.com/gorilla/mux"
 	"github.com/mholt/binding"
 	"github.com/unrolled/render"
@@ -30,15 +29,15 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 	item, err := lc.listRepository.FindByID(vars["id"])
 	if err != nil {
-		errors := make([]responses.Error, 0)
-		errors = append(errors, responses.Error{
+		errors := make([]models.Error, 0)
+		errors = append(errors, models.Error{
 			Message: err.Error(),
 		})
 
-		lc.view.JSON(w, http.StatusNotFound, responses.Errors{
+		lc.view.JSON(w, http.StatusNotFound, models.Errors{
 			Code:    http.StatusNotFound,
 			Status:  http.StatusText(http.StatusNotFound),
-			Message: "list item not found",
+			Message: "List item not found",
 			Errors:  errors,
 		})
 
@@ -47,13 +46,13 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 	// links
 	url, _ := mux.CurrentRoute(r).URL("id", vars["id"])
-	links := responses.Links{
+	links := models.Links{
 		Self: url.String(),
 	}
 
 	item.Links.Self = url.String()
 
-	lc.view.JSON(w, http.StatusOK, responses.Success{
+	lc.view.JSON(w, http.StatusOK, models.Success{
 		Code:   http.StatusOK,
 		Status: http.StatusText(http.StatusOK),
 		Links:  links,
@@ -63,7 +62,28 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
 func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
-	items, err := lc.listRepository.FindAll(r.URL.Query().Get("email"))
+	var items []models.List
+	var errors []models.Error
+
+	// find a better solution
+	email := r.URL.Query().Get("email")
+
+	if email == "" {
+		errors = append(errors, models.Error{
+			Message: "Email: Provide an email address",
+		})
+
+		lc.view.JSON(w, http.StatusBadRequest, models.Errors{
+			Code:    http.StatusBadRequest,
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Query parameter missing",
+			Errors:  errors,
+		})
+
+		return
+	}
+
+	items, err := lc.listRepository.FindAll(email)
 	if err != nil {
 		log.Print(err.Error())
 
@@ -71,7 +91,7 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	}
 
 	url, _ := mux.CurrentRoute(r).URL()
-	links := responses.Links{
+	links := models.Links{
 		Self: url.String(),
 	}
 
@@ -79,7 +99,11 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 		items[i].Links.Self = fmt.Sprintf("%s/%s", url.String(), item.ID)
 	}
 
-	lc.view.JSON(w, http.StatusOK, responses.Success{
+	if len(items) == 0 {
+		items = make([]models.List, 0)
+	}
+
+	lc.view.JSON(w, http.StatusOK, models.Success{
 		Code:   http.StatusOK,
 		Status: http.StatusText(http.StatusOK),
 		Links:  links,
@@ -88,21 +112,21 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 }
 
 func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
-	errors := make([]responses.Error, 0)
+	errors := make([]models.Error, 0)
 	list := new(models.List)
 
 	errs := binding.Bind(r, list)
 	if errs != nil {
 		for _, msg := range errs {
-			errors = append(errors, responses.Error{
+			errors = append(errors, models.Error{
 				Message: msg.Error(),
 			})
 		}
 
-		lc.view.JSON(w, http.StatusBadRequest, responses.Errors{
+		lc.view.JSON(w, http.StatusBadRequest, models.Errors{
 			Code:    http.StatusBadRequest,
 			Status:  http.StatusText(http.StatusBadRequest),
-			Message: "invalid data",
+			Message: "Invalid data",
 			Errors:  errors,
 		})
 
@@ -111,14 +135,14 @@ func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
 
 	id, err := lc.listRepository.Create(*list)
 	if err != nil {
-		errors = append(errors, responses.Error{
+		errors = append(errors, models.Error{
 			Message: err.Error(),
 		})
 
-		lc.view.JSON(w, http.StatusBadRequest, responses.Errors{
+		lc.view.JSON(w, http.StatusBadRequest, models.Errors{
 			Code:    http.StatusBadRequest,
 			Status:  http.StatusText(http.StatusBadRequest),
-			Message: "failed to create list",
+			Message: "Failed to create list",
 			Errors:  errors,
 		})
 
@@ -133,7 +157,7 @@ func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (lc *ListController) PutList(w http.ResponseWriter, r *http.Request) {
-
+	// implement
 }
 
 func (lc *ListController) DeleteList(w http.ResponseWriter, r *http.Request) {
@@ -141,7 +165,7 @@ func (lc *ListController) DeleteList(w http.ResponseWriter, r *http.Request) {
 
 	rowsAffected, err := lc.listRepository.DeleteByID(vars["id"])
 	if err != nil {
-
+		// handle
 	}
 
 	if rowsAffected == 1 {

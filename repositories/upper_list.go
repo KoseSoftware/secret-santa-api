@@ -28,7 +28,7 @@ func (lr *UpperListRepository) Create(l models.List) (id string, err error) {
 	l.Created = time.Now()
 	l.Updated = time.Now()
 
-	q := lr.sess.InsertInto("lists").Values(l)
+	q := lr.sess.InsertInto(listTable).Values(l)
 
 	_, err = q.Exec()
 	if err != nil {
@@ -41,7 +41,7 @@ func (lr *UpperListRepository) Create(l models.List) (id string, err error) {
 }
 
 func (lr *UpperListRepository) FindAll(email string) (items []models.List, err error) {
-	res := lr.sess.Collection("lists").Find().Where(db.Cond{
+	res := lr.sess.Collection(listTable).Find().Where(db.Cond{
 		"email": email,
 	})
 
@@ -54,7 +54,7 @@ func (lr *UpperListRepository) FindAll(email string) (items []models.List, err e
 }
 
 func (lr *UpperListRepository) FindByID(id string) (item models.List, err error) {
-	res := lr.sess.Collection("lists").Find().Where(db.Cond{
+	res := lr.sess.Collection(listTable).Find().Where(db.Cond{
 		"id": id,
 	})
 
@@ -67,7 +67,7 @@ func (lr *UpperListRepository) FindByID(id string) (item models.List, err error)
 }
 
 func (lr *UpperListRepository) DeleteByID(id string) (rowsAffected int64, err error) {
-	q := lr.sess.DeleteFrom("lists").Where(db.Cond{
+	q := lr.sess.DeleteFrom(listTable).Where(db.Cond{
 		"id": id,
 	})
 

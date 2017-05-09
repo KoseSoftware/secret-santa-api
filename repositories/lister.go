@@ -2,6 +2,8 @@ package repositories
 
 import "github.com/KoseSoftware/secret-santa-api/models"
 
+const listTable = "lists"
+
 type ListerRepository interface {
 	Create(l models.List) (id string, err error)
 	FindAll(email string) (items []models.List, err error)

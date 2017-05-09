@@ -5,22 +5,21 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/KoseSoftware/secret-santa-api/responses"
 	"github.com/mholt/binding"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
 type List struct {
-	ID        string          `json:"id,omitempty" db:"id,omitempty"`
-	Organiser string          `json:"organiser" db:"organiser"`
-	Email     string          `json:"email" db:"email" validate:"required,email"`
-	Amount    *float64        `json:"amount" db:"amount"`
-	Date      time.Time       `json:"date" db:"date"`
-	Location  string          `json:"location,omitempty" db:"location"`
-	Notes     string          `json:"notes,omitempty" db:"notes"`
-	Created   time.Time       `json:"created" db:"created"`
-	Updated   time.Time       `json:"updated" db:"updated"`
-	Links     responses.Links `json:"_links,omitempty"`
+	ID        string    `json:"id,omitempty" db:"id,omitempty"`
+	Organiser string    `json:"organiser" db:"organiser"`
+	Email     string    `json:"email" db:"email" validate:"required,email"`
+	Amount    *float64  `json:"amount" db:"amount"`
+	Date      time.Time `json:"date" db:"date"`
+	Location  string    `json:"location,omitempty" db:"location"`
+	Notes     string    `json:"notes,omitempty" db:"notes"`
+	Created   time.Time `json:"created" db:"created"`
+	Updated   time.Time `json:"updated" db:"updated"`
+	Links     Links     `json:"_links,omitempty"`
 }
 
 func (l *List) FieldMap(req *http.Request) binding.FieldMap {
