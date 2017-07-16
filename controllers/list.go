@@ -65,7 +65,7 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	var items []models.List
 	var errors []models.Error
 
-	// find a better solution
+	// find a better solution / got one!!! JWT
 	email := r.URL.Query().Get("email")
 
 	if email == "" {

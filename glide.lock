@@ -1,8 +1,10 @@
-hash: c85e318f61e4b4d322b1e8f5508f74c1391717320118434aa2495e1b99d90ccc
-updated: 2017-04-05T21:00:43.541362821+01:00
+hash: 226dc2933e7bbc17f5e74ccb3197048cf5e3c9a8e56dff64778321028b6c8962
+updated: 2017-07-16T21:47:03.183373662+01:00
 imports:
 - name: github.com/dchest/uniuri
   version: 8902c56451e9b58ff940bbe5fec35d5f9c04584a
+- name: github.com/dgrijalva/jwt-go
+  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
 - name: github.com/go-playground/locales
   version: b860c92274dfb72f517b8b4c11c6d9f2f8cc9d91
   subpackages:
@@ -14,7 +16,7 @@ imports:
 - name: github.com/gorilla/context
   version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
 - name: github.com/gorilla/mux
-  version: 392c28fe23e1c45ddba891b0320b3b5df220beea
+  version: bcd8bc72b08df0f70df986b97f95590779502d31
 - name: github.com/mholt/binding
   version: f53601f1387c422be7317a2b01d96b2455d2d2d6
 - name: github.com/phyber/negroni-gzip
@@ -26,9 +28,9 @@ imports:
 - name: github.com/urfave/negroni
   version: fde5e16d32adc7ad637e9cd9ad21d4ebc6192535
 - name: gopkg.in/go-playground/validator.v9
-  version: 6d8c18553ea1ac493d049edd6f102f52e618f085
+  version: fb68f39656d7ebf8aa339ad4917aa0c260ecc237
 - name: upper.io/db.v3
-  version: 99c1768a1cfc5ad29721228fe27c6ad632f08dbe
+  version: 03fd6b08517b0d6a70d5a22e26ea8760d7a43085
   subpackages:
   - internal/cache
   - internal/cache/hashstructure
