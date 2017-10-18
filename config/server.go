@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/urfave/negroni"
+	"github.com/codegangsta/negroni"
 )
 
 var httpAddr = 3000
