@@ -16,11 +16,11 @@ import (
 	"upper.io/db.v3/mysql"
 )
 
-var NotImplemented = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+var notImplemented = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Not Implemented"))
 })
 
-var StatusHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+var statusHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("API is up and running"))
 })
 
@@ -52,16 +52,15 @@ func main() {
 
 	v1 := r.PathPrefix("/api/v1").Subrouter()
 
-	v1.HandleFunc("/lists", lc.GetLists).Methods("GET").Name("get_lists")
 	v1.HandleFunc("/lists", lc.PostList).Methods("POST").Name("post_list")
 	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}", lc.GetList).Methods("GET").Name("get_list")
 	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}", lc.PutList).Methods("PUT").Name("put_list")
 	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}", lc.DeleteList).Methods("DELETE").Name("delete_list")
-	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", NotImplemented).Methods("GET")
-	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", NotImplemented).Methods("POST")
-	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", NotImplemented).Methods("PUT")
+	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", notImplemented).Methods("GET")
+	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", notImplemented).Methods("POST")
+	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", notImplemented).Methods("PUT")
 
-	v1.HandleFunc("/status", StatusHandler).Methods("GET")
+	v1.HandleFunc("/status", statusHandler).Methods("GET")
 
 	// admin routes
 	adminRoutes := mux.NewRouter()

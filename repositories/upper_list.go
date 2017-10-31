@@ -40,19 +40,6 @@ func (lr *UpperListRepository) Create(l models.List) (id string, err error) {
 	return
 }
 
-func (lr *UpperListRepository) FindAll(email string) (items []models.List, err error) {
-	res := lr.sess.Collection(listTable).Find().Where(db.Cond{
-		"email": email,
-	})
-
-	err = res.All(&items)
-	if err != nil {
-		log.Fatalf("res.All(): %q\n", err)
-	}
-
-	return
-}
-
 func (lr *UpperListRepository) FindByID(id string) (item models.List, err error) {
 	res := lr.sess.Collection(listTable).Find().Where(db.Cond{
 		"id": id,
