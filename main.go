@@ -7,9 +7,7 @@ import (
 	"github.com/KoseSoftware/secret-santa-api/config"
 	"github.com/KoseSoftware/secret-santa-api/controllers"
 	"github.com/KoseSoftware/secret-santa-api/repositories"
-	"github.com/auth0/go-jwt-middleware"
 	"github.com/codegangsta/negroni"
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/phyber/negroni-gzip/gzip"
 	"github.com/unrolled/render"
@@ -25,14 +23,6 @@ var statusHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request
 })
 
 func main() {
-	// jwt
-	jwtMiddleware := jwtmiddleware.New(jwtmiddleware.Options{
-		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
-			return []byte("My secret in dev"), nil
-		},
-		SigningMethod: jwt.SigningMethodHS256,
-	})
-
 	v := render.New()
 
 	sess, err := mysql.Open(config.GetDbSettings())
@@ -45,7 +35,6 @@ func main() {
 
 	hc := controllers.NewHomepageController(v)
 	lc := controllers.NewListController(lr, v)
-	ac := controllers.NewAdminController()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", hc.Index).Methods("GET").Name("homepage")
@@ -61,19 +50,6 @@ func main() {
 	v1.HandleFunc("/lists/{id:[a-zA-Z0-9]+}/exclusions", notImplemented).Methods("PUT")
 
 	v1.HandleFunc("/status", statusHandler).Methods("GET")
-
-	// admin routes
-	adminRoutes := mux.NewRouter()
-	adminRoutes.HandleFunc("/admin", ac.Index)
-
-	// create common middleware to be shared across routers
-	common := negroni.New()
-
-	// add any admin middleware to common
-	r.PathPrefix("/admin").Handler(common.With(
-		negroni.HandlerFunc(jwtMiddleware.HandlerWithNext),
-		negroni.Wrap(adminRoutes),
-	))
 
 	n := negroni.Classic()
 	n.Use(gzip.Gzip(gzip.DefaultCompression))

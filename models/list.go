@@ -11,10 +11,10 @@ import (
 
 type List struct {
 	ID        string    `json:"id,omitempty" db:"id,omitempty"`
-	Organiser string    `json:"organiser" db:"organiser"`
+	Organiser string    `json:"organiser" db:"organiser" validate:"required"`
 	Email     string    `json:"email" db:"email" validate:"required,email"`
-	Amount    *float64  `json:"amount" db:"amount"`
-	Date      time.Time `json:"date" db:"date"`
+	Amount    *float64  `json:"amount" db:"amount" validate:"required"`
+	Date      time.Time `json:"date" db:"date" validate:"required"`
 	Location  string    `json:"location,omitempty" db:"location"`
 	Notes     string    `json:"notes,omitempty" db:"notes"`
 	Created   time.Time `json:"created" db:"created"`

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
@@ -47,7 +46,8 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 	// links
 	url, _ := mux.CurrentRoute(r).URL("id", vars["id"])
 	links := models.Links{
-		Self: url.String(),
+		Self:       url.String(),
+		Exclusions: fmt.Sprintf("%s/exclusions", url),
 	}
 
 	item.Links.Self = url.String()
@@ -61,7 +61,7 @@ func (lc *ListController) GetList(w http.ResponseWriter, r *http.Request) {
 }
 
 // https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
-func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
+/*func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 	var items []models.List
 	var errors []models.Error
 
@@ -109,7 +109,7 @@ func (lc *ListController) GetLists(w http.ResponseWriter, r *http.Request) {
 		Links:  links,
 		Data:   items,
 	})
-}
+}*/
 
 func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
 	errors := make([]models.Error, 0)
@@ -157,7 +157,7 @@ func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (lc *ListController) PutList(w http.ResponseWriter, r *http.Request) {
-	// implement
+	w.Write([]byte("Not Implemented"))
 }
 
 func (lc *ListController) DeleteList(w http.ResponseWriter, r *http.Request) {

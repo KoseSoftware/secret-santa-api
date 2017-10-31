@@ -11,11 +11,12 @@ type Pages struct {
 }
 
 type Links struct {
-	Self     string `json:"self"`
-	First    string `json:"first,omitempty"`
-	Previous string `json:"prev,omitempty"`
-	Next     string `json:"next,omitempty"`
-	Last     string `json:"last,omitempty"`
+	Self       string `json:"self"`
+	First      string `json:"first,omitempty"`
+	Previous   string `json:"prev,omitempty"`
+	Next       string `json:"next,omitempty"`
+	Last       string `json:"last,omitempty"`
+	Exclusions string `json:"exclusions,omitempty"`
 }
 
 type Success struct {

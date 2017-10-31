@@ -24,7 +24,7 @@ func (lr *UpperListRepository) Create(l models.List) (id string, err error) {
 	// set id
 	l.ID = uniuri.NewLen(7)
 
-	// set timestamp
+	// set timestamps
 	l.Created = time.Now()
 	l.Updated = time.Now()
 
@@ -32,10 +32,28 @@ func (lr *UpperListRepository) Create(l models.List) (id string, err error) {
 
 	_, err = q.Exec()
 	if err != nil {
-		log.Fatalf("sess.InsertInto(): %q\n", err)
+		log.Printf("sess.InsertInto(): %q\n", err)
 	}
 
 	id = l.ID
+
+	return
+}
+
+func (lr *UpperListRepository) Update(l models.List) (rowsAffected int64, err error) {
+	// set timestamp
+	l.Updated = time.Now()
+
+	q := lr.sess.Update(listTable).Where(db.Cond{
+		"id": l.ID,
+	}).Set(l)
+
+	result, err := q.Exec()
+	if err != nil {
+		log.Printf("sess.Update(): %q\n", err)
+	}
+
+	rowsAffected, err = result.RowsAffected()
 
 	return
 }
@@ -47,7 +65,7 @@ func (lr *UpperListRepository) FindByID(id string) (item models.List, err error)
 
 	err = res.One(&item)
 	if err != nil {
-		log.Fatalf("res.One(): %q\n", err)
+		log.Printf("res.One(): %q\n", err)
 	}
 
 	return
@@ -60,7 +78,7 @@ func (lr *UpperListRepository) DeleteByID(id string) (rowsAffected int64, err er
 
 	result, err := q.Exec()
 	if err != nil {
-		log.Fatalf("sess.DeleteFrom(): %q\n", err)
+		log.Printf("sess.DeleteFrom(): %q\n", err)
 	}
 
 	rowsAffected, err = result.RowsAffected()
