@@ -157,6 +157,17 @@ func (lc *ListController) PostList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (lc *ListController) PutList(w http.ResponseWriter, r *http.Request) {
+	//check if body id matches uri id
+	/*vars := mux.Vars(r)
+
+	errors := make([]models.Error, 0)
+	list := new(models.List)
+
+	errs := binding.Bind(r, list)
+	if errs != nil {
+
+	}*/
+
 	w.Write([]byte("Not Implemented"))
 }
 

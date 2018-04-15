@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"github.com/KoseSoftware/secret-santa-api/models"
@@ -22,7 +23,9 @@ func NewUpperListRepository(sess sqlbuilder.Database) *UpperListRepository {
 
 func (lr *UpperListRepository) Create(l models.List) (id string, err error) {
 	// set id
-	l.ID = uniuri.NewLen(7)
+	l.ID = strings.ToLower(uniuri.NewLen(7))
+
+	// does that already exist?
 
 	// set timestamps
 	l.Created = time.Now()
